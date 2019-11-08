@@ -20453,11 +20453,11 @@ described the data using a categorical distribution (normalized histogram) where
 $$Pr(x = k|\lambda_{1 , \cdots, K}) = \lambda_k$$.</p>
 <h2 id="Maximum-likelihood">Maximum likelihood<a class="anchor-link" href="#Maximum-likelihood">&#182;</a></h2><p>For the ML and MAP techniques, we estimate the 256 parameters $\Lambda=\{ \lambda_k\}_{k=0}^{255}$</p>
 <p>To find the maximum likelihood solution, we maximize the product of the likelihoods for each individual data point with respect to the parameters $\{ \lambda_k\}_{k=0}^{255}$
-$$\hat{\Lambda}= arg \max_{\Lambda} \prod_{i=1}^I Pr(x_i|\Lambda) \text{  s.t.  }  \sum_k \lambda_k =1$$</p>
+$$\hat{\Lambda}= arg \max_{\Lambda \in \mathbb{R}^{256}} \prod_{i=1}^I Pr(x_i|\Lambda) \text{  s.t.  }  \sum_k \lambda_k =1$$</p>
 <p>We set the derivatives equal to zero, and solve for $\lambda_k$ to obtain : 
 $$\hat{\lambda_k}=\frac{N_k}{\sum_{l=0}^{255} N_l} $$
 In other words, $\lambda_k$ is the proportion of times that we observed bin k.</p>
-<h2 id="Maximum-a-posteriori">Maximum a posteriori<a class="anchor-link" href="#Maximum-a-posteriori">&#182;</a></h2><p>$$\hat{\Lambda}= arg \max_{\Lambda} \prod_{i=1}^I Pr(x_i|\Lambda) Pr(\Lambda) \text{  s.t.  }  \sum_k \lambda_k =1$$</p>
+<h2 id="Maximum-a-posteriori">Maximum a posteriori<a class="anchor-link" href="#Maximum-a-posteriori">&#182;</a></h2><p>$$\hat{\Lambda}= arg \max_{\Lambda\in \mathbb{R}^{256}} \prod_{i=1}^I Pr(x_i|\Lambda) Pr(\Lambda) \text{  s.t.  }  \sum_k \lambda_k =1$$</p>
 
 </div>
 </div>
@@ -20466,7 +20466,30 @@ In other words, $\lambda_k$ is the proportion of times that we observed bin k.</
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-word-about-discriminative-and-generative-models">A word about discriminative and generative models<a class="anchor-link" href="#A-word-about-discriminative-and-generative-models">&#182;</a></h1><p>Pr(x|y) is called a generative model. It tries to model the distribution of x (the data).</p>
+<h1 id="Discriminative-and-Generative-models">Discriminative and Generative models<a class="anchor-link" href="#Discriminative-and-Generative-models">&#182;</a></h1><p>In particular, we distinguish between generative models and discriminative models.
+For generative models, we build a probability model of the data and parameterize
+it by the scene content. For discriminative models, we build a probability model
+of the scene content and parameterize it by the data.</p>
+<p>Models relating the data $x$ to the target $y$ fall into one of two categories. We either:</p>
+<ol>
+<li>model the contingency of the target state on the data $Pr(y|x)$ or</li>
+<li>model the contingency of the data on the world state $Pr(x|y)$.</li>
+</ol>
+<p>The first type of model is termed discriminative. The second is termed generative;</p>
+<p>The target $y$ can be a class label ("cat") if we are dealing with a classification problem.</p>
+<ol>
+<li><p>In the discriminative model, we choose an appropriate form for the distribution $Pr(y)$
+over the target state. The models may also depends on a set of parameters $W$.
+Since the distribution over the state depends on both the data and these parameters,
+we write it as $Pr(y|x,W)$ and refer to it as the posterior distribution.
+The goal of the learning algorithm is to fit the parameters $W$ using paired training
+data $\{x_i,y_i\}_{i=1}^M$. This can be done using the maximum likelihood (ML), maximum
+a posteriori (MAP), or Bayesian approaches.</p>
+</li>
+<li><p>In the generative model, we choose the form for the distribution $Pr(x)$ over the data. The generative model can depend on parameters, it as $Pr(x|y,W)$ and refer to it as the $likelihood$. In inference, we aim to compute the posterior distribution $Pr(y|x)$. To this end we specify a prior $Pr(w)$ over the target state and then use Bayes' rule.</p>
+</li>
+</ol>
+<p>Pr(x|y) is called a generative model. It tries to model the distribution of x (the data).</p>
 <p>Pr(y|x) is a discriminative model if the distribution of x is never computed. It does not model x. It tries directly to discriminate y according to x.</p>
 
 </div>
